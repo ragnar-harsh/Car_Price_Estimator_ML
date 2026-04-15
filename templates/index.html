@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Car Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1>🚗 Car Price Predictor</h1>
+            <p class="subtitle">Enter car details to predict its price</p>
+
+            <form action="/predict" method="post">
+
+                <div class="input-group">
+                    <label>Company</label>
+                    <select name="company" id="company" required onchange="change_company()">
+                        <option disabled selected>Select Company</option>
+                        {% for company in company_list %}
+                            <option>{{ company }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Model</label>
+                    <!-- <select name="model" required>
+                    <option disabled selected>Select Model</option>
+                    <option>Swift</option>
+                    <option>i20</option>
+                    <option>City</option>
+                    <option>Innova</option>
+                </select> -->
+                    <select name="model" id="model" required>
+                        <option disabled selected>Select Model</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Year of Purchase</label>
+                    <select name="year" required>
+                        <option disabled selected>Select Year</option>
+                        <!-- <script>
+                            for (let i = 2025; i >= 2000; i--) {
+                                document.write(`<option value="${i}">${i}</option>`)
+                            }
+                        </script> -->
+                        {% for year in year_list %}
+                            <option>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Fuel Type</label>
+                    <select name="fuel" required>
+                        <option disabled selected>Select Fuel Type</option>
+                        <!-- <option>Petrol</option>
+                        <option>Diesel</option>
+                        <option>CNG</option> -->
+                        {% for fuel in fuel_type_list %}
+                            <option>{{ fuel }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Distance Travelled (KMs)</label>
+                    <input type="number" name="kms_driven" placeholder="e.g. 50000" required>
+                </div>
+
+                <button type="submit">Predict Price 💰</button>
+
+            </form>
+
+            {% if prediction %}
+            <div class="result">
+                <h2>Estimated Price: ₹ {{ prediction }}</h2>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // const companySelect = document.getElementById("company");
+        // const modelSelect = document.getElementById("model");
+        // // console.log("{{car_model_list}}");
+
+        // // Get model list from Flask
+        // // const carModels = "{{ car_model_list | tojson }}";
+
+        // modelSelect.value = "";
+        // modelSelect.innerHTML = "";
+
+        
+
+        // companySelect.addEventListener("change", function () {
+        //     // const selectedCompany = this.value;
+
+        //     // // Clear previous options
+        //     // modelSelect.innerHTML = '<option disabled selected>Select Model</option>';
+
+        //     // // Filter models based on company (first word match)
+        //     // const filteredModels = carModels.filter(model =>
+        //     //     model.split(" ")[0] === selectedCompany
+        //     // );
+
+        //     // // Populate dropdown
+        //     // filteredModels.forEach(model => {
+        //     //     const option = document.createElement("option");
+        //     //     option.value = model;
+        //     //     option.textContent = model;
+        //     //     modelSelect.appendChild(option);
+        //     // });
+
+            
+
+
+
+        // });
+
+        function change_company(){
+            const companySelect = document.getElementById("company");
+            const modelSelect = document.getElementById("model");
+            modelSelect.value = "";
+            modelSelect.innerHTML = "";
+
+            "{% for company in company_list %}"
+
+                if(company.value == "{{company}}"){
+                    "{% for model in car_model_list %}"
+                        "{% if company in model %}"
+
+                            var newOption = document.createElement("option");
+                            newOption.value = "{{ model }}";
+                            newOption.innerHTML = "{{ model }}";
+                            modelSelect.options.add(newOption);
+
+                        "{% endif %}"
+                    "{% endfor %}"
+                }
+            "{% endfor %}"
+        }
+
+    </script>
+
+</body>
+
+</html>
