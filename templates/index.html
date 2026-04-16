@@ -15,7 +15,7 @@
             <h1>🚗 Car Price Predictor</h1>
             <p class="subtitle">Enter car details to predict its price</p>
 
-            <form action="/predict" method="post">
+            <form action="#" method="post">
 
                 <div class="input-group">
                     <label>Company</label>
@@ -74,58 +74,51 @@
                     <input type="number" name="kms_driven" placeholder="e.g. 50000" required>
                 </div>
 
-                <button type="submit">Predict Price 💰</button>
+                <button type="submit" onclick="send_data(event)">Predict Price 💰</button>
 
             </form>
-
-            {% if prediction %}
             <div class="result">
-                <h2>Estimated Price: ₹ {{ prediction }}</h2>
+                <h2><span id="prediction">RS.</span></h2>
+                <h2><span id="predicted"> </span></h2>
             </div>
-            {% endif %}
         </div>
     </div>
 
+
+</body>
     <script>
-        // const companySelect = document.getElementById("company");
-        // const modelSelect = document.getElementById("model");
-        // // console.log("{{car_model_list}}");
-
-        // // Get model list from Flask
-        // // const carModels = "{{ car_model_list | tojson }}";
-
-        // modelSelect.value = "";
-        // modelSelect.innerHTML = "";
-
-        
-
-        // companySelect.addEventListener("change", function () {
-        //     // const selectedCompany = this.value;
-
-        //     // // Clear previous options
-        //     // modelSelect.innerHTML = '<option disabled selected>Select Model</option>';
-
-        //     // // Filter models based on company (first word match)
-        //     // const filteredModels = carModels.filter(model =>
-        //     //     model.split(" ")[0] === selectedCompany
-        //     // );
-
-        //     // // Populate dropdown
-        //     // filteredModels.forEach(model => {
-        //     //     const option = document.createElement("option");
-        //     //     option.value = model;
-        //     //     option.textContent = model;
-        //     //     modelSelect.appendChild(option);
-        //     // });
-
-            
 
 
+        function form_handler(event){
+            event.preventDefault();
+        }
 
-        // });
+        function send_data(event){
+            // console.log(document.getElementById("prediction"));
+
+            // document.querySelector('form').addEventListener('submit', form_handler);
+            event.preventDefault();
+
+            var fd = new FormData(document.querySelector('form'));
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/predict', true);
+            document.getElementById("prediction").innerHTML="Wait! Estimating Correct Price...";
+
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == XMLHttpRequest.DONE){
+                    document.getElementById('predicted').innerHTML = "Estimated Price: ₹ " + xhr.responseText;
+                    document.getElementById('prediction').innerHTML = "";
+                }
+            }
+
+            xhr.onload = function(){};
+            xhr.send(fd);
+        }
 
         function change_company(){
-            const companySelect = document.getElementById("company");
+            // const companySelect = document.getElementById("company");
             const modelSelect = document.getElementById("model");
             modelSelect.value = "";
             modelSelect.innerHTML = "";
@@ -148,7 +141,5 @@
         }
 
     </script>
-
-</body>
 
 </html>
